@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>天天开心</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      width: 100vw; 
+      height: 100vh; 
+      overflow: hidden; /* 避免页面滚动 */
+      background: #f5f7fa;
+    }
+    /* 弹窗样式：自适应+堆叠 */
+    .popup {
+      position: fixed;
+      padding: 12px 18px;
+      border-radius: 10px;
+      background: #fff;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      font-size: 14px;
+      color: #333;
+      z-index: 1000;
+      cursor: pointer;
+      max-width: 200px; /* 限制弹窗宽度 */
+      word-wrap: break-word;
+      transition: transform 0.2s;
+    }
+    .popup:hover { transform: scale(1.02); }
+    /* 多色弹窗背景（柔和色系） */
+    .popup-pink { background: #ffeef2; }
+    .popup-blue { background: #e8f4ff; }
+    .popup-yellow { background: #fff9e6; }
+    .popup-green { background: #e9ffe8; }
+    .popup-purple { background: #f3e8ff; }
+    /* 弹窗标题样式 */
+    .popup-title {
+      font-size: 12px;
+      color: #ff4d6d;
+      margin-bottom: 4px;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    // 更多关心话语列表
+    const careTexts = [
+      "保持好心情呀",
+      "我想你啦~",
+      "今天过得开心嘛？",
+      "祝你金榜题名！",
+      "愿你梦想成真✨",
+      "别熬夜啦，早点休息~",
+      "愿所有烦恼都消失！",
+      "记得好好护肤哦",
+      "别太累啦，偶尔偷懒也好",
+      "多喝温水呀",
+      "今天也要元气满满~",
+      "天气变凉啦，注意保暖",
+      "你今天真的超棒的！",
+      "累了就停下来歇一歇",
+      "要记得好好吃饭~"
+    ];
+    // 弹窗背景色类名
+    const popupColors = [
+      "popup-pink", "popup-blue", "popup-yellow", 
+      "popup-green", "popup-purple"
+    ];
+
+    // 生成弹窗（自适应屏幕）
+    function createPopup(text, index) {
+      const popup = document.createElement("div");
+      popup.className = `popup ${popupColors[index % popupColors.length]}`;
+      popup.innerHTML = `<span class="popup-title">💖 提示</span>${text}`;
+
+      // 自适应屏幕：根据设备尺寸计算随机位置
+      const screenWidth = window.innerWidth;
+      const screenHeight = window.innerHeight;
+      // 弹窗位置限制在屏幕内（避免超出可视区域）
+      const maxLeft = screenWidth - 220; // 弹窗宽度+边距
+      const maxTop = screenHeight - 100; // 弹窗高度+边距
+      const randomLeft = Math.random() * maxLeft;
+      const randomTop = Math.random() * maxTop;
+      popup.style.left = `${randomLeft}px`;
+      popup.style.top = `${randomTop}px`;
+
+      // 点击弹窗关闭
+      popup.onclick = () => {
+        popup.style.opacity = 0;
+        setTimeout(() => popup.remove(), 200);
+      };
+
+      document.body.appendChild(popup);
+    }
+
+    // 批量生成所有弹窗
+    function showAllPopups() {
+      careTexts.forEach((text, index) => {
+        // 延迟生成，模拟堆叠弹出的动画感（加快速度）
+        // 使用时间戳确保每次的颜色选择不同
+        setTimeout(() => createPopup(text, Date.now() + index), index * 80); // 从150ms加快到80ms
+      });
+    }
+
+    // 创建并播放背景音乐
+    function initBackgroundMusic() {
+      const audio = document.createElement('audio');
+      audio.src = '与我无关demo.mp3'; // 用户稍后自行添加音乐路径
+      audio.loop = true; // 设置循环播放
+      audio.autoplay = true; // 自动播放
+      audio.muted = false;
+      
+      // 添加到文档中
+      document.body.appendChild(audio);
+      
+      // 尝试播放音乐（处理浏览器自动播放政策限制）
+      audio.play().catch(error => {
+        console.log('自动播放被浏览器政策阻止，请点击页面任意位置后重试:', error);
+        // 添加点击事件监听器，用户交互后播放
+        document.addEventListener('click', () => {
+          audio.play();
+        }, { once: true });
+      });
+      
+      return audio;
+    }
+
+    // 页面加载后执行
+    window.onload = () => {
+      // 初始化背景音乐
+      initBackgroundMusic();
+      
+      // 首次显示所有弹窗
+      showAllPopups();
+      
+      // 计算所有弹窗显示完毕的时间（最后一个弹窗的延迟时间）
+      const totalDisplayTime = (careTexts.length - 1) * 100;
+      
+      // 设置定时器，每隔一段时间重复显示所有弹窗
+      // 所有弹窗显示完毕后再等1秒开始重复，加快循环间隔
+      setInterval(showAllPopups, totalDisplayTime + 0); // 从3000ms缩短到1000ms
+    };
+  </script>
+</body>
+</html>
