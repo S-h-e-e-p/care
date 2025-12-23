@@ -1,0 +1,112 @@
+/* 响应式布局 - 使页面宽高等于设备窗口宽高 */
+
+/* 重置默认样式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+    margin: 0;
+    padding: 0;
+}
+
+/* 使基础容器适配窗口大小 */
+#base {
+    position: relative;
+    transform-origin: top left;
+    width: 375px; /* 原始宽度 */
+    height: 667px; /* 原始高度 */
+}
+
+/* 背景适配 */
+.responsive-bg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 响应式内容 */
+.responsive-content {
+    position: absolute;
+    transform-origin: top left;
+}
+
+/* 适配图片元素 */
+.ax_default._图片_ {
+    position: absolute;
+}
+
+.ax_default._图片_ img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+/* 适配文本元素 */
+.ax_default.label {
+    position: absolute;
+}
+
+/* 适配按钮元素 */
+.ax_default.primary_button {
+    position: absolute;
+}
+
+/* 适配组合元素 */
+.ax_default {
+    position: absolute;
+}
+
+/* 移动端优先的响应式设计 */
+@media (max-width: 375px) {
+    #base {
+        width: 100vw;
+        height: 100vh;
+    }
+}
+
+@media (min-width: 376px) {
+    #base {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
+
+/* 以下是JavaScript代码，将在HTML中通过<script>标签引入 */
+/*
+function adaptToScreen() {
+    const base = document.getElementById('base');
+    const screenWidth = window.innerWidth;
+    const screenHeight = window.innerHeight;
+    
+    // 原始设计尺寸
+    const designWidth = 375;
+    const designHeight = 667;
+    
+    // 计算缩放比例
+    const scaleX = screenWidth / designWidth;
+    const scaleY = screenHeight / designHeight;
+    const scale = Math.min(scaleX, scaleY);
+    
+    // 应用缩放
+    base.style.transform = `scale(${scale})`;
+    base.style.transformOrigin = 'center center';
+    
+    // 居中显示
+    base.style.position = 'absolute';
+    base.style.top = '50%';
+    base.style.left = '50%';
+    base.style.transform = `translate(-50%, -50%) scale(${scale})`;
+}
+
+// 页面加载和窗口调整时适配屏幕
+window.addEventListener('load', adaptToScreen);
+window.addEventListener('resize', adaptToScreen);
+*/
